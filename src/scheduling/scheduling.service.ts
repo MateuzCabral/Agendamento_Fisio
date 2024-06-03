@@ -1,26 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSchedulingDto } from './dto/create-scheduling.dto';
-import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
+import { SchedulingRepository } from './scheduling.repository';
 
 @Injectable()
 export class SchedulingService {
-  create(createSchedulingDto: CreateSchedulingDto) {
-    return 'This action adds a new scheduling';
-  }
+  constructor(private schedulingRepository: SchedulingRepository) {}
 
-  findAll() {
-    return `This action returns all scheduling`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} scheduling`;
-  }
-
-  update(id: number, updateSchedulingDto: UpdateSchedulingDto) {
-    return `This action updates a #${id} scheduling`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} scheduling`;
+  async create(createSchedulingDto: CreateSchedulingDto) {
+    return await this.schedulingRepository.create({
+      pedido_medico: createSchedulingDto.pedido_medico,
+      primeira_consulta: createSchedulingDto.primeira_consulta,
+      idPaciente: createSchedulingDto.idPaciente,
+      status: 'Pendente',
+      idFisioterapeuta: null,
+      idCoordenador: null,
+    });
   }
 }

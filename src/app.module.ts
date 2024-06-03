@@ -5,7 +5,6 @@ import { SchedulingModule } from './scheduling/scheduling.module';
 
 @Module({
   imports: [PrismaModule, SchedulingModule],
-  controllers: [],
   providers: [PrismaService],
 })
 export class AppModule {}
