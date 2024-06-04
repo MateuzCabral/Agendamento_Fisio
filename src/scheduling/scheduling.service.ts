@@ -6,6 +6,22 @@ import { SchedulingRepository } from './scheduling.repository';
 export class SchedulingService {
   constructor(private schedulingRepository: SchedulingRepository) {}
 
+  async findAll() {
+    return await this.schedulingRepository.findAll();
+  }
+
+  async findOne(id: number) {
+    return await this.schedulingRepository.findOne(id);
+  }
+
+  async findByPaciente(idPaciente: number) {
+    return await this.schedulingRepository.findByPaciente(idPaciente);
+  }
+
+  async findByFisio(idFisioterapeuta: number) {
+    return await this.schedulingRepository.findByFisio(idFisioterapeuta);
+  }
+
   async create(createSchedulingDto: CreateSchedulingDto) {
     return await this.schedulingRepository.create({
       pedido_medico: createSchedulingDto.pedido_medico,
