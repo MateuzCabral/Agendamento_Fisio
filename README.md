@@ -46,3 +46,14 @@
   "idPaciente": 1
 }
 ```
+<br>
+
+## PUT em /agendamentos/id
+ corpo da requisição
+```bash
+{
+  "data_agendamento": "2024-06-10T10:00:00",
+  "idFisioterapeuta": 1,
+  "idCoordenador": 1
+}
+```
