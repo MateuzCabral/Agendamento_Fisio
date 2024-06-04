@@ -31,4 +31,11 @@ export class SchedulingRepository {
   async create(data: Prisma.AgendamentoCreateInput) {
     return await this.prisma.agendamento.create({ data });
   }
+
+  async update(id: number, data: Prisma.AgendamentoUpdateInput) {
+    return await this.prisma.agendamento.update({
+      where: { id },
+      data,
+    });
+  }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { SchedulingRepository } from './scheduling.repository';
+import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 
 @Injectable()
 export class SchedulingService {
@@ -30,6 +31,15 @@ export class SchedulingService {
       status: 'Pendente',
       idFisioterapeuta: null,
       idCoordenador: null,
+    });
+  }
+
+  async update(id: number, updateSchedulingDto: UpdateSchedulingDto) {
+    return await this.schedulingRepository.update(id, {
+      data_agendamento: updateSchedulingDto.data_agendamento,
+      idFisioterapeuta: updateSchedulingDto.idFisioterapeuta,
+      idCoordenador: updateSchedulingDto.idCoordenador,
+      status: 'Aceito',
     });
   }
 }

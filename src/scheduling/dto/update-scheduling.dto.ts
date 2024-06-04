@@ -1,14 +1,16 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateSchedulingDto } from './create-scheduling.dto';
-import { IsDate, IsNumber } from 'class-validator';
+import { IsDate, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class UpdateSchedulingDto extends PartialType(CreateSchedulingDto) {
+  @Type(() => Date)
   @IsDate()
   data_agendamento: Date;
 
-  @IsNumber()
+  @IsInt()
   idFisioterapeuta: number;
 
-  @IsNumber()
+  @IsInt()
   idCoordenador: number;
 }

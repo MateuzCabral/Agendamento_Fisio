@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsInt, IsString } from 'class-validator';
 
 export class CreateSchedulingDto {
   @IsString()
@@ -7,6 +7,6 @@ export class CreateSchedulingDto {
   @IsBoolean()
   primeira_consulta: boolean;
 
-  @IsNumber()
+  @IsInt()
   idPaciente: number;
 }
