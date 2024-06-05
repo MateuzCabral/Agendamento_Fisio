@@ -57,3 +57,5 @@
   "idCoordenador": 1
 }
 ```
+## Cancelar agendamento
+``http://localhost:8081/agendamentos/cancel/1``
