@@ -38,4 +38,13 @@ export class SchedulingRepository {
       data,
     });
   }
+
+  async cancel(id: number) {
+    return await this.prisma.agendamento.update({
+      where: { id },
+      data: {
+        status: 'Cancelado',
+      },
+    });
+  }
 }

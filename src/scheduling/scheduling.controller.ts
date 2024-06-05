@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, Patch } from '@nestjs/common';
 import { SchedulingService } from './scheduling.service';
 import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
@@ -38,5 +38,10 @@ export class SchedulingController {
     @Body() updateSchedulingDto: UpdateSchedulingDto,
   ) {
     return this.schedulingService.update(+id, updateSchedulingDto);
+  }
+
+  @Patch('/cancel/:id')
+  cancel(@Param('id') id: number) {
+    return this.schedulingService.cancel(+id);
   }
 }

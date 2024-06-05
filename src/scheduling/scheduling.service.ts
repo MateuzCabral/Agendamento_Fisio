@@ -42,4 +42,8 @@ export class SchedulingService {
       status: 'Aceito',
     });
   }
+
+  async cancel(id: number) {
+    return await this.schedulingRepository.cancel(id);
+  }
 }
