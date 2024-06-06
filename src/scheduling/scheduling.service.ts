@@ -23,9 +23,9 @@ export class SchedulingService {
     return await this.schedulingRepository.findByFisio(idFisioterapeuta);
   }
 
-  async create(createSchedulingDto: CreateSchedulingDto) {
+  async create(createSchedulingDto: CreateSchedulingDto, filePath: string) {
     return await this.schedulingRepository.create({
-      pedido_medico: createSchedulingDto.pedido_medico,
+      pedido_medico: filePath,
       primeira_consulta: createSchedulingDto.primeira_consulta,
       idPaciente: createSchedulingDto.idPaciente,
       status: 'Pendente',

@@ -1,8 +1,20 @@
-import { Controller, Post, Body, Get, Param, Put, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Patch,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { SchedulingService } from './scheduling.service';
 import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 @Controller('agendamentos')
 export class SchedulingController {
   constructor(private readonly schedulingService: SchedulingService) {}
@@ -28,8 +40,26 @@ export class SchedulingController {
   }
 
   @Post()
-  create(@Body() createSchedulingDto: CreateSchedulingDto) {
-    return this.schedulingService.create(createSchedulingDto);
+  @UseInterceptors(
+    FileInterceptor('pedido_medico', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  async create(
+    @Body() createSchedulingDto: CreateSchedulingDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const filePath = file.filename;
+    return this.schedulingService.create(createSchedulingDto, filePath);
   }
 
   @Put(':id')
