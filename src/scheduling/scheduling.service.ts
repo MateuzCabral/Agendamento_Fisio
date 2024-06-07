@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SchedulingRepository } from './scheduling.repository';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
-
+import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
 @Injectable()
 export class SchedulingService {
   constructor(private schedulingRepository: SchedulingRepository) {}
@@ -43,7 +43,10 @@ export class SchedulingService {
     });
   }
 
-  async cancel(id: number) {
-    return await this.schedulingRepository.cancel(id);
+  async cancel(id: number, cancelSchedulingDto: CancelSchedulingDto) {
+    return await this.schedulingRepository.cancel(
+      id,
+      cancelSchedulingDto.motivo_cancelamento,
+    );
   }
 }

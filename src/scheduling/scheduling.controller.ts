@@ -12,6 +12,7 @@ import {
 import { SchedulingService } from './scheduling.service';
 import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
+import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -73,7 +74,10 @@ export class SchedulingController {
   }
 
   @Patch('/cancel/:id')
-  cancel(@Param('id') id: number) {
-    return this.schedulingService.cancel(+id);
+  cancel(
+    @Param('id') id: number,
+    @Body() cancelSchedulingDto: CancelSchedulingDto,
+  ) {
+    return this.schedulingService.cancel(+id, cancelSchedulingDto);
   }
 }

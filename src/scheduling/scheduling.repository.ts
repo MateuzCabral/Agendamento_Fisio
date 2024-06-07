@@ -39,11 +39,12 @@ export class SchedulingRepository {
     });
   }
 
-  async cancel(id: number) {
+  async cancel(id: number, motivo_cancelamento: string) {
     return await this.prisma.agendamento.update({
       where: { id },
       data: {
         status: 'Cancelado',
+        motivo_cancelamento,
       },
     });
   }

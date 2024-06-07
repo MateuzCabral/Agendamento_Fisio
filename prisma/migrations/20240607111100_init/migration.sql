@@ -11,6 +11,7 @@ CREATE TABLE "Agendamento" (
     "idPaciente" INTEGER NOT NULL,
     "idFisioterapeuta" INTEGER,
     "idCoordenador" INTEGER,
+    "motivo_cancelamento" TEXT,
 
     CONSTRAINT "Agendamento_pkey" PRIMARY KEY ("id")
 );
