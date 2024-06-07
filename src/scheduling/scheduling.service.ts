@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { SchedulingRepository } from './scheduling.repository';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 
@@ -23,14 +22,15 @@ export class SchedulingService {
     return await this.schedulingRepository.findByFisio(idFisioterapeuta);
   }
 
-  async create(createSchedulingDto: CreateSchedulingDto) {
+  async create(
+    idPaciente: number,
+    primeira_consulta: boolean,
+    filePath: string,
+  ) {
     return await this.schedulingRepository.create({
-      pedido_medico: createSchedulingDto.pedido_medico,
-      primeira_consulta: createSchedulingDto.primeira_consulta,
-      idPaciente: createSchedulingDto.idPaciente,
-      status: 'Pendente',
-      idFisioterapeuta: null,
-      idCoordenador: null,
+      pedido_medico: filePath,
+      primeira_consulta: primeira_consulta,
+      idPaciente: idPaciente,
     });
   }
 
