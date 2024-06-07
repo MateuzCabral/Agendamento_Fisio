@@ -31,7 +31,8 @@
   "status": "Pendente",
   "idPaciente": 1,
   "idFisioterapeuta": null,
-  "idCoordenador": null
+  "idCoordenador": null,
+  "motivo_cancelamento": null
 }
 ````
 
@@ -41,7 +42,9 @@
  corpo da requisição
 ```bash
 {
-  "pedido_medico": "teste",
+  'MULTIPART/FORM-DATA'
+
+  "pedido_medico": arquivo,
   "primeira_consulta": true,
   "idPaciente": 1
 }
@@ -57,5 +60,11 @@
   "idCoordenador": 1
 }
 ```
-## Cancelar agendamento
-``http://localhost:8081/agendamentos/cancel/1``
+<br>
+
+## PATCH para cancelar em /agendamentos/cancel/id
+```bash
+{
+  "motivo_cancelamento" : "escrever motivo"
+}
+```
