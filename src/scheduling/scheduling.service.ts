@@ -22,16 +22,23 @@ export class SchedulingService {
     return await this.schedulingRepository.findByFisio(idFisioterapeuta);
   }
 
-  async create(
-    idPaciente: number,
-    primeira_consulta: boolean,
-    filePath: string,
-  ) {
-    return await this.schedulingRepository.create({
+  async create(idPaciente: number, filePath: string) {
+    const verifyScheduling =
+      await this.schedulingRepository.findByPaciente(idPaciente);
+    if (verifyScheduling.length > 0) {
+      const agendamentoFalse = await this.schedulingRepository.create({
+        pedido_medico: filePath,
+        primeira_consulta: false,
+        idPaciente: idPaciente,
+      });
+      return agendamentoFalse;
+    }
+    const agendamentoTrue = await this.schedulingRepository.create({
       pedido_medico: filePath,
-      primeira_consulta: primeira_consulta,
+      primeira_consulta: true,
       idPaciente: idPaciente,
     });
+    return agendamentoTrue;
   }
 
   async update(id: number, updateSchedulingDto: UpdateSchedulingDto) {

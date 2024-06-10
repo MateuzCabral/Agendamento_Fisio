@@ -59,10 +59,9 @@ export class SchedulingController {
     @Body() createSchedulingDto: CreateSchedulingDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const { idPaciente, primeira_consulta } = createSchedulingDto;
-    const convert = Boolean(primeira_consulta);
+    const { idPaciente } = createSchedulingDto;
     const filePath = file.filename;
-    return this.schedulingService.create(+idPaciente, convert, filePath);
+    return this.schedulingService.create(+idPaciente, filePath);
   }
 
   @Put(':id')
