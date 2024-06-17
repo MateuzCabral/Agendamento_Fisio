@@ -14,6 +14,14 @@ API de agendamentos construída com NestJS e Prisma, utilizando PostgreSQL como 
 $ npm install
 ```
 
+### Execução do Prisma
+
+```
+$ npx prisma migrate dev
+```
+
+> Execute esse comando para rodar as migrations
+
 ### Execução
 
 Modo de inicialização
@@ -90,11 +98,11 @@ http://localhost:8081/agendamentos/fisio/:id
 
 ```json
 [
-  {
-    "idPaciente": 1,
-    "pedido_medico": arquivo,
-    "primeira_consulta": true,
-  }
+{
+  "idPaciente": 1,
+  "pedido_medico": arquivo,
+  "primeira_consulta": true,
+}
 ]
 ```
 
@@ -168,7 +176,6 @@ http://localhost:8081/agendamentos/fisio/:id
 }
 ```
 
-
 ### Notas Adicionais:
 
 1. **Banco de Dados**: Certifique-se de que seu banco de dados PostgreSQL esteja configurado corretamente e acessível via a variável de ambiente `DATABASE_URL`.
@@ -178,3 +185,7 @@ http://localhost:8081/agendamentos/fisio/:id
 3. **Variáveis de Ambiente**: Porfavor renomear o arquivo `.env-example` para `.env`, Adicione quaisquer outras variáveis de ambiente necessárias ao arquivo `.env`.
 
 Com estas adições, a documentação fornece uma visão abrangente da API, incluindo instruções de instalação, execução, endpoints, e configuração do banco de dados.
+
+```
+
+```
