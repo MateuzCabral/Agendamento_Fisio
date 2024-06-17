@@ -180,12 +180,15 @@ http://localhost:8081/agendamentos/fisio/:id
 
 1. **Banco de Dados**: Certifique-se de que seu banco de dados PostgreSQL esteja configurado corretamente e acessível via a variável de ambiente `DATABASE_URL`.
 
-2. **Uploads de Arquivos**: A API utiliza o `multipart/form-data` para uploads de arquivos.
+2. **Migrations**: A API utiliza as migrations geradas pelo Prisma execute o comando `npx prisma migration dev` para gerar as tabelas e colunas.
 
-3. **Variáveis de Ambiente**: Porfavor renomear o arquivo `.env-example` para `.env`, Adicione quaisquer outras variáveis de ambiente necessárias ao arquivo `.env`.
+3. **Uploads de Arquivos**: A API utiliza o `multipart/form-data` para uploads de arquivos.
+
+4. **Variáveis de Ambiente**: Porfavor renomear o arquivo `.env-example` para `.env`, Adicione quaisquer outras variáveis de ambiente necessárias ao arquivo `.env`.
 
 Com estas adições, a documentação fornece uma visão abrangente da API, incluindo instruções de instalação, execução, endpoints, e configuração do banco de dados.
-
-```
-
-```
+<div align="center">
+<img src="https://cdn.simpleicons.org/nestjs" height="30" alt="nestjs logo"  />
+<img src="https://cdn.simpleicons.org/prisma" height="30" alt="nestjs logo"  />
+<img src="https://cdn.simpleicons.org/postgresql/" height="30" alt="nestjs logo"  />
+</div>
