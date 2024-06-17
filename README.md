@@ -24,7 +24,7 @@ $ npx prisma migrate dev
 
 ### Execução
 
-Modo de inicialização
+Modo de Inicialização
 
 ```bash
 $ npm run start
@@ -36,7 +36,7 @@ Modo de Observação
 $ npm run dev
 ```
 
-Modo de produção
+Modo de Produção
 
 ```bash
 $ npm run prod
@@ -97,13 +97,11 @@ http://localhost:8081/agendamentos/fisio/:id
 <strong>Corpo da requisição:</strong>
 
 ```json
-[
 {
   "idPaciente": 1,
   "pedido_medico": arquivo,
   "primeira_consulta": true,
 }
-]
 ```
 
 ### Retorno com o codigo 201 (Created)
@@ -184,9 +182,8 @@ http://localhost:8081/agendamentos/fisio/:id
 
 3. **Uploads de Arquivos**: A API utiliza o `multipart/form-data` para uploads de arquivos.
 
-4. **Variáveis de Ambiente**: Porfavor renomear o arquivo `.env-example` para `.env`, Adicione quaisquer outras variáveis de ambiente necessárias ao arquivo `.env`.
+4. **Variáveis de Ambiente**: Renomear o arquivo `.env-example` para `.env`, Adicione quaisquer outras variáveis de ambiente necessárias ao arquivo `.env`.
 
-Com estas adições, a documentação fornece uma visão abrangente da API, incluindo instruções de instalação, execução, endpoints, e configuração do banco de dados.
 <div align="center">
 <img src="https://cdn.simpleicons.org/nestjs" height="30" alt="nestjs logo"  />
 <img src="https://cdn.simpleicons.org/prisma" height="30" alt="nestjs logo"  />
