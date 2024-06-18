@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SchedulingRepository } from './scheduling.repository';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
+import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class SchedulingService {
   constructor(private schedulingRepository: SchedulingRepository) {}
@@ -22,15 +23,23 @@ export class SchedulingService {
     return await this.schedulingRepository.findByFisio(idFisioterapeuta);
   }
 
-  async create(
-    idPaciente: number,
-    primeira_consulta: boolean,
-    filePath: string,
-  ) {
+  extractTokenFromHeader(authHeader: string): string | null {
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      return authHeader.split(' ')[1];
+    }
+    return null;
+  }
+
+  async create(filePath: string, token: string) {
+    const toto = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(toto, process.env.SECRET_KEY);
+    if (!decoded) {
+      console.log('Ta invalido');
+    }
+    const id_paciente = Number(decoded.UserId);
     return await this.schedulingRepository.create({
       pedido_medico: filePath,
-      primeira_consulta: primeira_consulta,
-      idPaciente: idPaciente,
+      idPaciente: id_paciente,
     });
   }
 
