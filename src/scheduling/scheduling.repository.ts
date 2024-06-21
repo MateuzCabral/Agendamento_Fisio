@@ -22,6 +22,13 @@ export class SchedulingRepository {
     });
   }
 
+  async findLastByPaciente(idPaciente: number) {
+    return await this.prisma.agendamento.findFirst({
+      where: { idPaciente },
+      orderBy: { id: 'desc' },
+    });
+  }
+
   async findByFisio(idFisioterapeuta: number) {
     return await this.prisma.agendamento.findMany({
       where: { idFisioterapeuta },

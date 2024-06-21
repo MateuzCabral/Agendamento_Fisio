@@ -16,7 +16,6 @@ enum StatusAgendamento {
 model Agendamento {
   id                  Int               @id @default(autoincrement())
   pedido_medico       String
-  primeira_consulta   Boolean
   data_agendamento    DateTime?
   status              StatusAgendamento @default(Pendente)
   idPaciente          Int

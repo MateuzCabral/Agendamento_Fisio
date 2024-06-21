@@ -8,9 +8,9 @@ import {
   Patch,
   UseInterceptors,
   UploadedFile,
+  Headers,
 } from '@nestjs/common';
 import { SchedulingService } from './scheduling.service';
-import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -56,13 +56,14 @@ export class SchedulingController {
     }),
   )
   async create(
-    @Body() createSchedulingDto: CreateSchedulingDto,
     @UploadedFile() file: Express.Multer.File,
+    @Headers('authorization') token: string,
   ) {
-    const { idPaciente, primeira_consulta } = createSchedulingDto;
-    const convert = Boolean(primeira_consulta);
+    if (!token) {
+      console.log('Token Invalido');
+    }
     const filePath = file.filename;
-    return this.schedulingService.create(+idPaciente, convert, filePath);
+    return this.schedulingService.create(filePath, token);
   }
 
   @Put(':id')
