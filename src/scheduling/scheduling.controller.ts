@@ -11,7 +11,6 @@ import {
   Headers,
 } from '@nestjs/common';
 import { SchedulingService } from './scheduling.service';
-import { CreateSchedulingDto } from './dto/create-scheduling.dto';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -57,7 +56,6 @@ export class SchedulingController {
     }),
   )
   async create(
-    @Body() createSchedulingDto: CreateSchedulingDto,
     @UploadedFile() file: Express.Multer.File,
     @Headers('authorization') token: string,
   ) {
