@@ -3,15 +3,10 @@ import { SchedulingRepository } from './scheduling.repository';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
 import * as jwt from 'jsonwebtoken';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class SchedulingService {
-  constructor(
-    private schedulingRepository: SchedulingRepository,
-    private readonly httpService: HttpService,
-  ) {}
+  constructor(private schedulingRepository: SchedulingRepository) {}
 
   async findAll() {
     return await this.schedulingRepository.findAll();
@@ -44,7 +39,6 @@ export class SchedulingService {
     }
 
     const id_paciente = Number(decoded.UserId);
-    const url = `${process.env.URL}/Paciente/${id_paciente}/PrimeiraConsulta`;
 
     const ultimoAgendamento =
       await this.schedulingRepository.findLastByPaciente(id_paciente);
@@ -52,12 +46,6 @@ export class SchedulingService {
       throw new BadRequestException(
         'O último agendamento não foi aceito. Novo agendamento bloqueado',
       );
-    }
-
-    const verify = await this.schedulingRepository.findByPaciente(id_paciente);
-    if (verify.length > 0) {
-      const response = await firstValueFrom(this.httpService.patch(url));
-      console.log(response);
     }
 
     return await this.schedulingRepository.create({
