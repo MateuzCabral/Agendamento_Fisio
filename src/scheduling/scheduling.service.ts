@@ -1,17 +1,16 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SchedulingRepository } from './scheduling.repository';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
 import * as jwt from 'jsonwebtoken';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class SchedulingService {
-  constructor(
-    private schedulingRepository: SchedulingRepository,
-    private readonly httpService: HttpService,
-  ) {}
+  constructor(private schedulingRepository: SchedulingRepository) {}
 
   async findAll() {
     return await this.schedulingRepository.findAll();
@@ -37,14 +36,13 @@ export class SchedulingService {
   }
 
   async create(filePath: string, token: string) {
-    const toto = this.extractTokenFromHeader(token);
-    const decoded: any = jwt.verify(toto, process.env.SECRET_KEY);
+    const returnToken = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(returnToken, process.env.SECRET_KEY);
     if (!decoded) {
-      console.log('Ta invalido');
+      throw new UnauthorizedException();
     }
 
     const id_paciente = Number(decoded.UserId);
-    const url = `${process.env.URL}/Paciente/${id_paciente}/PrimeiraConsulta`;
 
     const ultimoAgendamento =
       await this.schedulingRepository.findLastByPaciente(id_paciente);
@@ -54,31 +52,49 @@ export class SchedulingService {
       );
     }
 
-    const verify = await this.schedulingRepository.findByPaciente(id_paciente);
-    if (verify.length > 0) {
-      const response = await firstValueFrom(this.httpService.patch(url));
-      console.log(response);
-    }
-
     return await this.schedulingRepository.create({
       pedido_medico: filePath,
       idPaciente: id_paciente,
     });
   }
 
-  async update(id: number, updateSchedulingDto: UpdateSchedulingDto) {
-    return await this.schedulingRepository.update(id, {
-      data_agendamento: updateSchedulingDto.data_agendamento,
-      idFisioterapeuta: updateSchedulingDto.idFisioterapeuta,
-      idCoordenador: updateSchedulingDto.idCoordenador,
-      status: 'Aceito',
-    });
+  async update(
+    id: number,
+    updateSchedulingDto: UpdateSchedulingDto,
+    token: string,
+  ) {
+    const returnToken = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(returnToken, process.env.SECRET_KEY);
+    if (!decoded) {
+      throw new UnauthorizedException();
+    }
+    if (decoded.Role.includes('Coordenador')) {
+      return await this.schedulingRepository.update(id, {
+        data_agendamento: updateSchedulingDto.data_agendamento,
+        idFisioterapeuta: updateSchedulingDto.idFisioterapeuta,
+        idCoordenador: updateSchedulingDto.idCoordenador,
+        status: 'Aceito',
+      });
+    }
+    throw new UnauthorizedException();
   }
 
-  async cancel(id: number, cancelSchedulingDto: CancelSchedulingDto) {
-    return await this.schedulingRepository.cancel(
-      id,
-      cancelSchedulingDto.motivo_cancelamento,
-    );
+  async cancel(
+    id: number,
+    cancelSchedulingDto: CancelSchedulingDto,
+    token: string,
+  ) {
+    const returnToken = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(returnToken, process.env.SECRET_KEY);
+    if (!decoded) {
+      throw new UnauthorizedException();
+    }
+    if (decoded.Role.includes('Paciente')) {
+      return await this.schedulingRepository.cancel(
+        id,
+        cancelSchedulingDto.motivo_cancelamento,
+      );
+    }
+    throw new UnauthorizedException();
   }
 }

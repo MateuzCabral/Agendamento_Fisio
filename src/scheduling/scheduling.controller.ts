@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Headers,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SchedulingService } from './scheduling.service';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
@@ -60,7 +61,7 @@ export class SchedulingController {
     @Headers('authorization') token: string,
   ) {
     if (!token) {
-      console.log('Token Invalido');
+      throw new UnauthorizedException();
     }
     const filePath = file.filename;
     return this.schedulingService.create(filePath, token);
@@ -69,16 +70,25 @@ export class SchedulingController {
   @Put(':id')
   update(
     @Param('id') id: number,
+    @Headers('authorization') token: string,
     @Body() updateSchedulingDto: UpdateSchedulingDto,
   ) {
-    return this.schedulingService.update(+id, updateSchedulingDto);
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+    return this.schedulingService.update(+id, updateSchedulingDto, token);
   }
 
   @Patch('/cancel/:id')
   cancel(
     @Param('id') id: number,
-    @Body() cancelSchedulingDto: CancelSchedulingDto,
+    @Headers('authorization') token: string,
+    @Body()
+    cancelSchedulingDto: CancelSchedulingDto,
   ) {
-    return this.schedulingService.cancel(+id, cancelSchedulingDto);
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+    return this.schedulingService.cancel(+id, cancelSchedulingDto, token);
   }
 }
