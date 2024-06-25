@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { SchedulingRepository } from './scheduling.repository';
 import { UpdateSchedulingDto } from './dto/update-scheduling.dto';
 import { CancelSchedulingDto } from './dto/cancel-scheduling.dto';
@@ -32,10 +36,10 @@ export class SchedulingService {
   }
 
   async create(filePath: string, token: string) {
-    const toto = this.extractTokenFromHeader(token);
-    const decoded: any = jwt.verify(toto, process.env.SECRET_KEY);
+    const returnToken = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(returnToken, process.env.SECRET_KEY);
     if (!decoded) {
-      console.log('Ta invalido');
+      throw new UnauthorizedException();
     }
 
     const id_paciente = Number(decoded.UserId);
@@ -54,19 +58,43 @@ export class SchedulingService {
     });
   }
 
-  async update(id: number, updateSchedulingDto: UpdateSchedulingDto) {
-    return await this.schedulingRepository.update(id, {
-      data_agendamento: updateSchedulingDto.data_agendamento,
-      idFisioterapeuta: updateSchedulingDto.idFisioterapeuta,
-      idCoordenador: updateSchedulingDto.idCoordenador,
-      status: 'Aceito',
-    });
+  async update(
+    id: number,
+    updateSchedulingDto: UpdateSchedulingDto,
+    token: string,
+  ) {
+    const returnToken = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(returnToken, process.env.SECRET_KEY);
+    if (!decoded) {
+      throw new UnauthorizedException();
+    }
+    if (decoded.Role.includes('Coordenador')) {
+      return await this.schedulingRepository.update(id, {
+        data_agendamento: updateSchedulingDto.data_agendamento,
+        idFisioterapeuta: updateSchedulingDto.idFisioterapeuta,
+        idCoordenador: updateSchedulingDto.idCoordenador,
+        status: 'Aceito',
+      });
+    }
+    throw new UnauthorizedException();
   }
 
-  async cancel(id: number, cancelSchedulingDto: CancelSchedulingDto) {
-    return await this.schedulingRepository.cancel(
-      id,
-      cancelSchedulingDto.motivo_cancelamento,
-    );
+  async cancel(
+    id: number,
+    cancelSchedulingDto: CancelSchedulingDto,
+    token: string,
+  ) {
+    const returnToken = this.extractTokenFromHeader(token);
+    const decoded: any = jwt.verify(returnToken, process.env.SECRET_KEY);
+    if (!decoded) {
+      throw new UnauthorizedException();
+    }
+    if (decoded.Role.includes('Paciente')) {
+      return await this.schedulingRepository.cancel(
+        id,
+        cancelSchedulingDto.motivo_cancelamento,
+      );
+    }
+    throw new UnauthorizedException();
   }
 }
