@@ -10,10 +10,17 @@ API de agendamentos construída com NestJS e Prisma, utilizando PostgreSQL como 
 
 ## Instalação
 
+1. Clone o repositorio
+
+```bash
+$ git clone https://github.com/MateuzCabral/Agendamento_Fisio.git
+```
+
+2. Instale as dependências
+
 ```bash
 $ npm install
 ```
-
 ### Execução do Prisma
 
 ```
