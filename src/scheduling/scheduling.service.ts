@@ -44,11 +44,12 @@ export class SchedulingService {
 
     const id_paciente = Number(decoded.UserId);
 
+    // Paciente só criar outro agendamento se ele não estiver com status de pendente
     const ultimoAgendamento =
       await this.schedulingRepository.findLastByPaciente(id_paciente);
-    if (ultimoAgendamento && ultimoAgendamento.status !== 'Aceito') {
+    if (ultimoAgendamento && ultimoAgendamento.status == 'Pendente') {
       throw new BadRequestException(
-        'O último agendamento não foi aceito. Novo agendamento bloqueado',
+        'O último agendamento ainda está pendente, Novo agendamento bloqueado',
       );
     }
 
