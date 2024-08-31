@@ -55,6 +55,9 @@ Certifique-se de configurar a variável de ambiente DATABASE_URL no arquivo .env
 
 ## Endpoints
 
+> Para garantir que tenha retorno das requisições é necessário utilizar o Authorization Bearer Token em
+https://github.com/GeanVitorM/Auth_server
+
 ### Rota GET para listar todos os agendamentos
 
 ```
