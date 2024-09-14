@@ -110,7 +110,6 @@ http://localhost:8081/agendamentos/fisio/:id
 {
   "idPaciente": 1,
   "pedido_medico": arquivo,
-  "primeira_consulta": true,
 }
 ```
 
